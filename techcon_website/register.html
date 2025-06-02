@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for TechCon 2024</title>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-microchip logo-icon"></i>
+            <h1>TECHCON 2024</h1>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="schedule.html">Schedule</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Register for TechCon 2024</h1>
+        <p>Join the world's leading technology conference and secure your spot today</p>
+    </div>
+
+    <!-- Registration Form -->
+    <main class="registration-container">
+        <div class="registration-card">
+            <h2 class="form-title">Create Your Account</h2>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="fullName" name="fullName" class="form-control"
+                            placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email"
+                            required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon password-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Create a password" required>
+                        <span class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-with-icon password-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                            placeholder="Confirm your password" required>
+                        <span class="password-toggle" id="confirmPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="package-selection">
+                    <h3 class="package-title">Select Your Conference Package</h3>
+                    <div class="packages">
+                        <div class="package-card" data-package="standard">
+                            <div class="package-name">Standard Pass</div>
+                            <div class="package-price">$299</div>
+                            <ul class="package-features">
+                                <li>Access to all keynotes</li>
+                                <li>General sessions</li>
+                                <li>Exhibition hall access</li>
+                                <li>Conference materials</li>
+                                <li>Daily coffee breaks</li>
+                            </ul>
+                        </div>
+
+                        <div class="package-card selected" data-package="premium">
+                            <div class="package-name">Premium Pass</div>
+                            <div class="package-price">$499</div>
+                            <ul class="package-features">
+                                <li>All Standard Pass benefits</li>
+                                <li>Workshop access (2 max)</li>
+                                <li>VIP networking event</li>
+                                <li>Conference swag bag</li>
+                                <li>Priority seating</li>
+                            </ul>
+                        </div>
+
+                        <div class="package-card" data-package="vip">
+                            <div class="package-name">VIP Experience</div>
+                            <div class="package-price">$899</div>
+                            <ul class="package-features">
+                                <li>All Premium Pass benefits</li>
+                                <li>All workshops unlimited</li>
+                                <li>Speaker meet & greet</li>
+                                <li>Gala dinner invitation</li>
+                                <li>Dedicated concierge</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="selectedPackage" name="package" value="premium">
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy
+                            Policy</a>. I understand that my registration is non-refundable.</label>
+                </div>
+
+                <button type="submit" class="btn-register">Register Now</button>
+
+                <div class="login-link">
+                    Already have an account? <a href="#">Sign in</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            copyright &copy; 2024 TechCon Conference. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>
