@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - TechCon 2024</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a20;
+            --darker-bg: #050510;
+            --card-bg: rgba(15, 15, 40, 0.8);
+            --text-light: #f0f0ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(11, 11, 30, 0.7) 0px, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(59, 1, 97, 0.5) 0px, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--darker-bg);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            font-size: 1.1rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--neon-pink);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        .page-header p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .filter-button {
+            background: rgba(25, 25, 60, 0.7);
+            color: var(--text-light);
+            border: 1px solid var(--neon-purple);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            background: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.7);
+        }
+
+        /* Main Content - Schedule Table */
+        main {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+
+        .schedule-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 3rem;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 255, 252, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        caption {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            text-align: left;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid var(--neon-pink);
+            text-shadow: 0 0 5px rgba(0, 255, 252, 0.3);
+        }
+
+        th {
+            background-color: rgba(30, 30, 70, 0.9);
+            color: var(--neon-green);
+            text-align: left;
+            padding: 1.2rem 1rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--neon-purple);
+        }
+
+        th[scope="col"] {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid rgba(188, 19, 254, 0.2);
+            vertical-align: top;
+        }
+
+        tr {
+            transition: background-color 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: rgba(40, 40, 80, 0.5);
+        }
+
+        .time-slot {
+            font-weight: 600;
+            color: var(--neon-green);
+            white-space: nowrap;
+        }
+
+        .session-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--neon-blue);
+        }
+
+        .session-location {
+            display: inline-block;
+            background: rgba(188, 19, 254, 0.2);
+            color: var(--neon-pink);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .session-type {
+            display: inline-block;
+            background: rgba(0, 255, 252, 0.1);
+            color: var(--neon-blue);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .speaker-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .speaker-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-purple);
+            object-fit: cover;
+        }
+
+        .speaker-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .speaker-company {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Track Labels */
+        .track-label {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .ai-track {
+            background: rgba(255, 0, 255, 0.15);
+            color: var(--neon-pink);
+            border-left: 3px solid var(--neon-pink);
+        }
+
+        .web-track {
+            background: rgba(0, 255, 252, 0.15);
+            color: var(--neon-blue);
+            border-left: 3px solid var(--neon-blue);
+        }
+
+        .cloud-track {
+            background: rgba(57, 255, 20, 0.15);
+            color: var(--neon-green);
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .cyber-track {
+            background: rgba(255, 165, 0, 0.15);
+            color: #ffa500;
+            border-left: 3px solid #ffa500;
+        }
+
+        /* Keynote Styling */
+        .keynote {
+            background: rgba(188, 19, 254, 0.1);
+            border-left: 4px solid var(--neon-purple);
+            padding-left: 1rem;
+        }
+
+        /* Break Styling */
+        .break-session {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+            border-top: 1px solid var(--neon-purple);
+            box-shadow: 0 -5px 15px rgba(188, 19, 254, 0.2);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--neon-blue);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-blue), 0 0 20px var(--neon-blue);
+            }
+
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 40px var(--neon-pink);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .schedule-container {
+                padding: 2rem 1rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            th,
+            td {
+                min-width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-header p {
+                font-size: 1.2rem;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .schedule-container {
+                padding: 1.5rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-microchip logo-icon"></i>
+            <h1>TECHCON 2024</h1>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="register.html">Register</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Schedule for TechCon 2024</h1>
+        <p>Plan your experience at the world's premier technology conference</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <button class="filter-button active">All Sessions</button>
+        <button class="filter-button">Keynotes</button>
+        <button class="filter-button">AI & Machine Learning</button>
+        <button class="filter-button">Web Development</button>
+        <button class="filter-button">Cloud Computing</button>
+        <button class="filter-button">Cybersecurity</button>
+    </div>
+
+    <!-- Main Content - Schedule Table -->
+    <main>
+        <div class="schedule-container">
+            <table>
+                <caption>Detailed Schedule of Events for TechCon 2024</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Session</th>
+                        <th scope="col">Speaker</th>
+                        <th scope="col">Track</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Day 1 -->
+                    <tr class="day-divider">
+                        <td colspan="4"
+                            style="text-align: center; background: rgba(188, 19, 254, 0.2); padding: 1rem; font-weight: bold; color: var(--neon-pink);">
+                            <i class="fas fa-calendar-alt"></i> Day 1: October 23, 2024
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">8:00 AM - 9:00 AM</td>
+                        <td>
+                            <div class="session-title">Registration & Welcome Coffee</div>
+                            <div class="session-location">Main Lobby</div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr class="keynote">
+                        <td class="time-slot">9:00 AM - 10:00 AM</td>
+                        <td>
+                            <div class="session-title">Opening Keynote: The Future of Technology</div>
+                            <div class="session-location">Grand Ballroom</div>
+                            <div class="session-type">Keynote Presentation</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Dr. Elena Rodriguez" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Dr. Elena Rodriguez</div>
+                                    <div class="speaker-company">CTO, NeuroTech Innovations</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label ai-track">AI & ML</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:15 AM - 11:15 AM</td>
+                        <td>
+                            <div class="session-title">Deep Learning Architectures for Real-World Applications</div>
+                            <div class="session-location">Room A</div>
+                            <div class="session-type">Technical Session</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Priya Sharma" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Priya Sharma</div>
+                                    <div class="speaker-company">Lead AI Researcher, DeepMind Labs</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label ai-track">AI & ML</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:15 AM - 11:15 AM</td>
+                        <td>
+                            <div class="session-title">Building Scalable Web Applications with Modern Frameworks</div>
+                            <div class="session-location">Room B</div>
+                            <div class="session-type">Workshop</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Sarah Chen" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Sarah Chen</div>
+                                    <div class="speaker-company">Senior Developer, TechFront</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label web-track">Web Dev</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">11:30 AM - 12:30 PM</td>
+                        <td>
+                            <div class="session-title">Cloud-Native Security: Best Practices</div>
+                            <div class="session-location">Room C</div>
+                            <div class="session-type">Panel Discussion</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="David Kim" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">David Kim</div>
+                                    <div class="speaker-company">Security Architect, CloudSecure</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label cyber-track">Cybersecurity</span></td>
+                    </tr>
+
+                    <tr class="break-session">
+                        <td class="time-slot">12:30 PM - 1:30 PM</td>
+                        <td colspan="3">Networking Lunch</td>
+                    </tr>
+
+                    <!-- Day 2 -->
+                    <tr class="day-divider">
+                        <td colspan="4"
+                            style="text-align: center; background: rgba(188, 19, 254, 0.2); padding: 1rem; font-weight: bold; color: var(--neon-pink);">
+                            <i class="fas fa-calendar-alt"></i> Day 2: October 24, 2024
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">9:00 AM - 10:00 AM</td>
+                        <td>
+                            <div class="session-title">Quantum Computing: Breaking Boundaries</div>
+                            <div class="session-location">Grand Ballroom</div>
+                            <div class="session-type">Keynote Presentation</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Dr. Michael Johnson" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Dr. Michael Johnson</div>
+                                    <div class="speaker-company">Director, Quantum Research Institute</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label ai-track">Emerging Tech</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:15 AM - 11:15 AM</td>
+                        <td>
+                            <div class="session-title">Building Real-Time Applications with WebSockets</div>
+                            <div class="session-location">Room A</div>
+                            <div class="session-type">Technical Session</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Alex Morgan" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Alex Morgan</div>
+                                    <div class="speaker-company">Lead Developer, RealTime Systems</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label web-track">Web Dev</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:15 AM - 11:15 AM</td>
+                        <td>
+                            <div class="session-title">Multi-Cloud Strategies for Enterprise</div>
+                            <div class="session-location">Room B</div>
+                            <div class="session-type">Workshop</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Jamie Smith" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Jamie Smith</div>
+                                    <div class="speaker-company">Cloud Architect, GlobalTech</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label cloud-track">Cloud</span></td>
+                    </tr>
+
+                    <!-- Day 3 -->
+                    <tr class="day-divider">
+                        <td colspan="4"
+                            style="text-align: center; background: rgba(188, 19, 254, 0.2); padding: 1rem; font-weight: bold; color: var(--neon-pink);">
+                            <i class="fas fa-calendar-alt"></i> Day 3: October 25, 2024
+                        </td>
+                    </tr>
+
+                    <tr class="keynote">
+                        <td class="time-slot">9:00 AM - 10:30 AM</td>
+                        <td>
+                            <div class="session-title">Closing Keynote: The Next Decade of Innovation</div>
+                            <div class="session-location">Grand Ballroom</div>
+                            <div class="session-type">Keynote Presentation</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Dr. Olivia Parker" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Dr. Olivia Parker</div>
+                                    <div class="speaker-company">CEO, FutureVision Labs</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label ai-track">Future Tech</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:45 AM - 12:00 PM</td>
+                        <td>
+                            <div class="session-title">Ethical AI: Challenges and Solutions</div>
+                            <div class="session-location">Room A</div>
+                            <div class="session-type">Panel Discussion</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Dr. Maya Johnson" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Dr. Maya Johnson</div>
+                                    <div class="speaker-company">AI Ethics Director, NeuroTech</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label ai-track">AI & ML</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-slot">10:45 AM - 12:00 PM</td>
+                        <td>
+                            <div class="session-title">Advanced Cybersecurity Threat Detection</div>
+                            <div class="session-location">Room C</div>
+                            <div class="session-type">Workshop</div>
+                        </td>
+                        <td>
+                            <div class="speaker-info">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                                    alt="Robert Chen" class="speaker-photo">
+                                <div>
+                                    <div class="speaker-name">Robert Chen</div>
+                                    <div class="speaker-company">Chief Security Officer, SecureNet</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="track-label cyber-track">Cybersecurity</span></td>
+                    </tr>
+
+                    <tr class="break-session">
+                        <td class="time-slot">12:00 PM - 1:00 PM</td>
+                        <td colspan="3">Farewell Lunch</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            copyright &copy; 2024 TechCon Conference. All rights reserved.
+        </div>
+    </footer>
+
+
+</body>
+
+</html>
